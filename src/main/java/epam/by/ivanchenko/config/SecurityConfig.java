@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 
@@ -38,38 +40,15 @@ public class SecurityConfig  {
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/hello", true)
                 .failureUrl("/auth/login?error")
-                .and().build();
+                .and()
+                .userDetailsService(personDetailsService)
+                .build();
     }
-    //WebSecurityCustomizer
 
-//    @Bean
-//    public UserDetailsManager userDetailsManager(AuthenticationManagerBuilder auth) throws Exception {
-//        UserDetails person = auth.userDetailsService();
-//       // auth.userDetailsService(personDetailsService);
-//        return new
-//    }
-
-
-
-
-
-
-
-
-
-//
-//    // OLD:
-//
-//    // Настройка аутентификации
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(personDetailsService);                                       // Провайдер
-//    }
-//
-//
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return NoOpPasswordEncoder.getInstance();                                          // Временно! Пароль не шифруется
-        // return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        //return new BCryptPasswordEncoder();
     }
 
 

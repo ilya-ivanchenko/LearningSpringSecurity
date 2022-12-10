@@ -31,7 +31,7 @@ public class SecurityConfig  {
         // конфиг. Spring Security
         // конфиг. авторизации
         return http
-                .csrf().disable()                                           // Откл. защиту межсайтовой подделки запросов
+                .csrf().disable()                                                                                    // Откл. защиту межсайтовой подделки запросов
                 .authorizeRequests()
                 .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()                 //  Доступ неаутентиф. пользователям к этим адресам разрешен
                 .anyRequest().authenticated()
@@ -42,16 +42,16 @@ public class SecurityConfig  {
                 .failureUrl("/auth/login?error")
                 .and()
                 // выход
-                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login")                                       //  При переходе на /logout куки и сессия удаляются
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login")                                       // При переходе на /logout куки и сессия удаляются
                 .and()
                 .userDetailsService(personDetailsService)
+
                 .build();
     }
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();                                          // Временно! Пароль не шифруется
-        //return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
 

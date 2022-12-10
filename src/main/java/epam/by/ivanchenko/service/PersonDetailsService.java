@@ -22,7 +22,7 @@ public class PersonDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String   username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Person> person = personRepository.findByUsername(username);
 
         if (person.isEmpty()) {

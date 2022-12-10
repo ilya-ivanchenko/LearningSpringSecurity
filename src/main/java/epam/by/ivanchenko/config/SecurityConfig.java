@@ -33,7 +33,7 @@ public class SecurityConfig  {
         return http
                 .csrf().disable()                                           // Откл. защиту межсайтовой подделки запросов
                 .authorizeRequests()
-                .requestMatchers("/auth/login", "/error").permitAll()
+                .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()                 //  Доступ неаутентиф. пользователям к этим адресам разрешен
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login")

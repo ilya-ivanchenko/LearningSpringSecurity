@@ -41,6 +41,9 @@ public class SecurityConfig  {
                 .defaultSuccessUrl("/hello", true)
                 .failureUrl("/auth/login?error")
                 .and()
+                // выход
+                .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login")                                       //  При переходе на /logout куки и сессия удаляются
+                .and()
                 .userDetailsService(personDetailsService)
                 .build();
     }

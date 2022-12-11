@@ -31,10 +31,11 @@ public class SecurityConfig  {
         // конфиг. Spring Security
         // конфиг. авторизации
         return http
-                .csrf().disable()                                                                                    // Откл. защиту межсайтовой подделки запросов
                 .authorizeRequests()
-                .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()                 //  Доступ неаутентиф. пользователям к этим адресам разрешен
-                .anyRequest().authenticated()
+                // Порядок правил важен, проверка идет сверху вниз. Более специфичные правила идут первыми
+                .requestMatchers("/admin").hasRole("ADMIN")                                                 // На страницу /admin доступ только с ролью ADMIN. Spring понимает, что ADMIN - это роль  ROLE_ADMIN
+                .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()                 // Доступ неаутентиф. пользователям к этим адресам разрешен
+                .anyRequest().hasAnyRole("USER", "ADMIN")                                                     // Для любого запроса доступ разрешен с ролями USER и ADMIN
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
@@ -45,7 +46,6 @@ public class SecurityConfig  {
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login")                                       // При переходе на /logout куки и сессия удаляются
                 .and()
                 .userDetailsService(personDetailsService)
-
                 .build();
     }
 
@@ -53,6 +53,4 @@ public class SecurityConfig  {
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

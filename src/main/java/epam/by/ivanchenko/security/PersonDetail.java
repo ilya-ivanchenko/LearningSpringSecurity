@@ -2,9 +2,11 @@ package epam.by.ivanchenko.security;
 
 import epam.by.ivanchenko.model.Person;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class PersonDetail implements UserDetails {
 
@@ -15,8 +17,9 @@ public class PersonDetail implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;                                                                        // Получаем роли пользователей и возращаем права для роли
+    public Collection<? extends GrantedAuthority> getAuthorities() {                                                    // Авторизация на основе роли
+        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));                                 // Получаем роли пользователей и возращаем права для роли
+        // Булет либо ROLE_USER либо ROLE_ADMIN
     }
 
     @Override

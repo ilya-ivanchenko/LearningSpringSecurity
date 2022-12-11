@@ -23,6 +23,7 @@ public class RegistrationService {
     @Transactional
     public void register(Person person) {
         person.setPassword(passwordEncoder.encode(person.getPassword()));
+        person.setRole("ROLE_USER");                                                                                    // Для SpringSecurity  важно, чтобы имя роли начиналась с ROLE_ ...
         personRepository.save(person);
     }
 }
